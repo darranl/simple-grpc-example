@@ -56,6 +56,14 @@
       </dependency>
 
       <dependency>
+        <groupId>org.wildfly.bom</groupId>
+        <artifactId>wildfly-ee-with-tools</artifactId>
+        <version>${version.wildfly}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+      <dependency>
         <groupId>org.wildfly.extras.grpc</groupId>
         <artifactId>protobuf</artifactId>
         <version>${project.version}</version>
@@ -80,6 +88,7 @@
   <modules>
     <module>generated</module>
     <module>client</module>
+    <module>cdi-deployment</module>
     <module>direct</module>
   </modules>
 

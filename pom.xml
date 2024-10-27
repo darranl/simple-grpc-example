@@ -28,6 +28,7 @@
     <version.wildfly>35.0.0.Beta1-SNAPSHOT</version.wildfly>
 
     <!-- Plugin Versions-->
+    <version.exec.plugin>3.5.0</version.exec.plugin>
     <version.os.plugin>1.7.1</version.os.plugin>
     <version.protobuf.plugin>0.6.1</version.protobuf.plugin> <!-- TODO This is very old -->
     <version.shade.plugin>3.6.0</version.shade.plugin>
@@ -78,6 +79,7 @@
 
   <modules>
     <module>generated</module>
+    <module>client</module>
     <module>direct</module>
   </modules>
 
@@ -91,32 +93,37 @@
     </extensions>
 
     <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>org.xolstice.maven.plugins</groupId>
-          <artifactId>protobuf-maven-plugin</artifactId>
-          <version>${version.protobuf.plugin}</version>
-          <configuration>
-            <pluginId>grpc-java</pluginId>
-            <protocArtifact>
-                              com.google.protobuf:protoc:${version.protobuf}:exe:${os.detected.classifier}
-            </protocArtifact>
-            <pluginArtifact>
-                              io.grpc:protoc-gen-grpc-java:${version.grpc}:exe:${os.detected.classifier}
-            </pluginArtifact>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-shade-plugin</artifactId>
-          <version>${version.shade.plugin}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.wildfly.plugins</groupId>
-          <artifactId>wildfly-maven-plugin</artifactId>
-          <version>${version.wildfly.plugin}</version>
-        </plugin>
-      </plugins>
+        <plugins>
+          <plugin>
+            <groupId>org.xolstice.maven.plugins</groupId>
+            <artifactId>protobuf-maven-plugin</artifactId>
+            <version>${version.protobuf.plugin}</version>
+            <configuration>
+              <pluginId>grpc-java</pluginId>
+              <protocArtifact>
+                                      com.google.protobuf:protoc:${version.protobuf}:exe:${os.detected.classifier}
+              </protocArtifact>
+              <pluginArtifact>
+                                      io.grpc:protoc-gen-grpc-java:${version.grpc}:exe:${os.detected.classifier}
+              </pluginArtifact>
+            </configuration>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-shade-plugin</artifactId>
+            <version>${version.shade.plugin}</version>
+          </plugin>
+          <plugin>
+            <groupId>org.wildfly.plugins</groupId>
+            <artifactId>wildfly-maven-plugin</artifactId>
+            <version>${version.wildfly.plugin}</version>
+          </plugin>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>${version.exec.plugin}</version>
+          </plugin>
+        </plugins>
       </pluginManagement>
   </build>
 

@@ -15,15 +15,25 @@
   <url>http://www.example.com</url>
 
   <properties>
+    <!-- Project Settings -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
+    <wildfly.home>${project.build.directory}/wildfly</wildfly.home>
 
+    <!-- Dependency Versions -->
     <version.javax.annotation>1.3.2</version.javax.annotation>
     <version.grpc>1.68.0</version.grpc>
     <version.protobuf>4.27.3</version.protobuf>
+    <version.wildfly>35.0.0.Beta1-SNAPSHOT</version.wildfly>
+
+    <!-- Plugin Versions-->
     <version.os.plugin>1.7.1</version.os.plugin>
     <version.protobuf.plugin>0.6.1</version.protobuf.plugin> <!-- TODO This is very old -->
+    <version.shade.plugin>3.6.0</version.shade.plugin>
+    <version.wildfly.plugin>5.0.1.Final</version.wildfly.plugin>
+
+
   </properties>
 
   <dependencyManagement>
@@ -54,41 +64,60 @@
             <groupId>javax.annotation</groupId>
             <artifactId>javax.annotation-api</artifactId>
             <version>${version.javax.annotation}</version>
-        </dependency>
+      </dependency>
+
+      <!-- Project Local Dependencies -->
+      <dependency>
+        <groupId>org.wildfly.extras.grpc</groupId>
+        <artifactId>generated-grpc</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
     </dependencies>
   </dependencyManagement>
 
   <modules>
     <module>generated</module>
+    <module>direct</module>
   </modules>
 
   <build>
     <extensions>
       <extension>
-          <groupId>kr.motd.maven</groupId>
-          <artifactId>os-maven-plugin</artifactId>
-          <version>${version.os.plugin}</version>
+        <groupId>kr.motd.maven</groupId>
+        <artifactId>os-maven-plugin</artifactId>
+        <version>${version.os.plugin}</version>
       </extension>
-  </extensions>
+    </extensions>
 
     <pluginManagement>
-        <plugins>
-            <plugin>
-                <groupId>org.xolstice.maven.plugins</groupId>
-                <artifactId>protobuf-maven-plugin</artifactId>
-                <version>${version.protobuf.plugin}</version>
-                <configuration>
-                    <pluginId>grpc-java</pluginId>
-                    <protocArtifact>
-                        com.google.protobuf:protoc:${version.protobuf}:exe:${os.detected.classifier}
-                    </protocArtifact>
-                    <pluginArtifact>
-                        io.grpc:protoc-gen-grpc-java:${version.grpc}:exe:${os.detected.classifier}
-                    </pluginArtifact>
-                </configuration>
-            </plugin>
-        </plugins>
-    </pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.xolstice.maven.plugins</groupId>
+          <artifactId>protobuf-maven-plugin</artifactId>
+          <version>${version.protobuf.plugin}</version>
+          <configuration>
+            <pluginId>grpc-java</pluginId>
+            <protocArtifact>
+                              com.google.protobuf:protoc:${version.protobuf}:exe:${os.detected.classifier}
+            </protocArtifact>
+            <pluginArtifact>
+                              io.grpc:protoc-gen-grpc-java:${version.grpc}:exe:${os.detected.classifier}
+            </pluginArtifact>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-shade-plugin</artifactId>
+          <version>${version.shade.plugin}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.wildfly.plugins</groupId>
+          <artifactId>wildfly-maven-plugin</artifactId>
+          <version>${version.wildfly.plugin}</version>
+        </plugin>
+      </plugins>
+      </pluginManagement>
   </build>
 
 </project>
